@@ -1,5 +1,4 @@
-#include "func.c"
-
+#include "func.h"
 
 struct dish
 {
@@ -14,11 +13,13 @@ struct dish
 
 int main(void)
 {
+#ifdef WIN32
 	system("color 09");
+#endif
 	FILE *fp,*fp2;
 	intro();
-	char username[50] = {'a','d','m','i','n'};
-	char pwd[50] = {'a','d','m','i','n'};
+	char username[50] = "admin";
+	char pwd[50] = "admin";
 	char pwd_cfm[50];
 	login(username,pwd);
 	int choice,ed_id;
@@ -28,34 +29,37 @@ int main(void)
 	switch(choice)
 		{
 			case 1:
-				system("cls");
+				system(CLS);
 				printf("Please enter your new password:\t");
 				pwd_input(pwd);
 				printf("\nConfirm your password:\t");
 				pwd_input(pwd_cfm);
 				if(!strcmp(pwd,pwd_cfm)) printf("\nYou have successfully changed your password!"); 
 				else printf("\nPasswords do not match. Confirmation failed.");
-				printf("\n\nPress anykey to return to main menu...\t");
-				getch();
+				printf("\n\nPress ENTER to return to main menu...\t");
+				getchar();
 				goto DISPLAY;
 			case 2:
-				system("cls");
+				system(CLS);
 				printf("\t\t\t\t\t--------------MENU----------------\n");
 				fp= fopen("Menu.dat","rb");
-				rewind(fp);
-				while (fread(&dpt,sizeof(struct dish),1,fp))
+				if(fp)
 				{
-					printf("\n\n%d. ",dpt.id);
-					printf("%s",dpt.name);
-					printf("\n%s",dpt.detail);
-					printf("\nPrice: $%d",dpt.price);
+					rewind(fp);
+					while (fread(&dpt,sizeof(struct dish),1,fp))
+					{
+						printf("\n\n%d. ",dpt.id);
+						printf("%s",dpt.name);
+						printf("\n%s",dpt.detail);
+						printf("\nPrice: $%d",dpt.price);
+					}
+					fclose(fp);
 				}
-				fclose(fp);
-				printf("\n\nPress anykey to return to main menu...\t");
-				getch();
+				printf("\n\nPress ENTER to return to main menu...\t");
+				getchar();
 				goto DISPLAY;	
 			case 3:
-				system("cls");
+				system(CLS);
 				printf("Edit course/dish by id:\t");
 				scanf("%d",&ed_id); 
 				fgetc(stdin);
@@ -70,8 +74,8 @@ int main(void)
 				}
 				if (check_id == false)
 				{
-					printf("\nThe course's id does not exist... Press anykey to continue");
-					getch();
+					printf("\nThe course's id does not exist... Press ENTER to continue");
+					getchar();
 				}
 				else
 				{
@@ -115,18 +119,21 @@ int main(void)
 					remove("Menu.dat");
 					rename("temp.dat","Menu.dat");
 				}
-				printf("\n\nPress anykey to return to main menu...\t");
-				getch();
+				printf("\n\nPress ENTER to return to main menu...\t");
+				getchar();
 				goto DISPLAY;	
-			case 4:
-				fp =fopen("Menu.dat","rb");
+			case 4:;
 				int max_id =0;
-				while(fread(&dpt,sizeof(struct dish),1,fp))
+				fp =fopen("Menu.dat","rb");
+				if(fp)
 				{
-					if (dpt.id> max_id) max_id = dpt.id;
+					while(fread(&dpt,sizeof(struct dish),1,fp))
+					{
+						if (dpt.id> max_id) max_id = dpt.id;
+					}
+					fclose(fp);
 				}
-				fclose(fp);
-				system("cls");
+				system(CLS);
 				printf("\n\t\t\t\t\t-----------------Add a course or a dish---------------");
 				printf("\nPlease enter all information:\t");
 				struct dish new_dpt;
@@ -140,11 +147,11 @@ int main(void)
 				fp =fopen("Menu.dat","a+");
 				fwrite(&new_dpt,sizeof(struct dish),1,fp);
 				fclose(fp);
-				printf("\n\nPress anykey to return to main menu...\t");
-				getch();
+				printf("\n\nPress ENTER to return to main menu...\t");
+				getchar();
 				goto DISPLAY;
 			case 5:
-				system("cls");
+				system(CLS);
 				printf("Delete course/dish by id:\t");
 				scanf("%d",&ed_id); 
 				fgetc(stdin);
@@ -159,8 +166,8 @@ int main(void)
 				}
 				if (check_id == false)
 				{
-					printf("\nThe course's id does not exist... Press anykey to continue");
-					getch();
+					printf("\nThe course's id does not exist... Press ENTER to continue");
+					getchar();
 				}
 				else
 				{
@@ -185,8 +192,8 @@ int main(void)
 					remove("Menu.dat");
 					rename("temp.dat","Menu.dat");
 				}
-				printf("\n\nPress anykey to return to main menu...\t");
-				getch();
+				printf("\n\nPress ENTER to return to main menu...\t");
+				getchar();
 				goto DISPLAY;
 		}
 	return 0;
