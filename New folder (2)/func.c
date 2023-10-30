@@ -2,66 +2,40 @@
 
 void intro()
 {
-	system("cls");
+	system(CLS);
 	printf("\t\t\t------------------------Group 10's project-----------------------------\n\n");
 	printf("Topic: Mangage a restaurant\n\n\n");
 	printf("Member:   1. Tran Thu Hien         - 22070560\n");
 	printf("       	  2. Doan Duy Long         - 22070843\n");
 	printf("       	  3. Nguyen Tran Hai Phong - 22070701\n");
 	printf("       	  4. Nguyen Manh Tuan	   - 22071205\n\n\n");
-	printf("Press anykey to continue:\t");
-	getch();
+	printf("Press ENTER to continue:\t");
+	getchar();
 }
 
 void user_input(char ch[50])
 {
-	fgets(ch,50,stdin);
-	ch[strlen(ch)-1] =0;
+	scanf(" %49[^\n]", ch);
 }
 
 void detail_input(char ch2[200])
 {
-	fgets(ch2,200,stdin);
-	ch2[strlen(ch2)-1] =0;
+	scanf(" %199[^\n]", ch2);
 }
 
 void pwd_input(char pwd[50])
 {
-	int i;
-	char ch;
-	while(true)
-	{
-		ch=getch();
-		if(ch == ENTER || ch == TAB)
-		{
-			pwd[i]='\0';
-			break;
-		}
-		else if (ch == BKSPC)
-		{
-			if(i>0)
-			{
-				i--;
-				printf("\b \b");
-			}
-		}
-		else
-		{
-			pwd[i++] =ch;
-			printf("* \b");
-		}
-	}
+	scanf(" %49[^\n\t]", pwd);
 }
 
 void login(char username[50],char pwd[50])
 {
-	system("cls");
 	char user_id[50];
 	char user_pwd[50];
 	bool check=false;
 	while (!check)
 	{
-		system("cls");
+		system(CLS);
 		printf("Please enter your username and password:\t");
 		printf("\n\nUsername: ");
 		user_input(user_id);
@@ -84,7 +58,7 @@ void login(char username[50],char pwd[50])
 
 int option_display()
 {
-	system("cls");
+	system(CLS);
 	printf("\t\t\t----------Welcome to Hawksworth's restaurant---------- ");
 	printf("\nPlease choose your operation:");
 	printf("\n\n1. Change password");
